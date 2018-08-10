@@ -9,9 +9,6 @@ spec:
   strategy:
     jenkinsPipelineStrategy:
       jenkinsfile: |-
-        @Library('PipelineUtils@v1.1.x')
-        import com.redhat.paas.pipeline.*
-
         def imageName = 'test-image'
         def imageTag = 'latest'
         def newImage
@@ -27,26 +24,19 @@ spec:
             }
             stages {
                 stage('test-runner-setup') {
-                    dir('docker_build') {
-                        sh "curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test"
-                    }
-                    }
-                stage('directory-checkout') {
-                    dir('docker_build') {
-                        git branch 'master', url: 'https://gitlab.cee.redhat.com/ebrennan/base-image-testing.git'
-
-                    }
-                }
-                stage('docker-build') {
-                    dir('docker_build') {
-                        dir('test_image') {
-                            newImage = docker.build("${imageName}:${imageTag}")
+                    steps{
+                        script{
+                            dir('docker_build') {
+                                sh "curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test"
+                                git url: 'https://gitlab.cee.redhat.com/ebrennan/base-image-testing.git'
+                                dir('test_image') {
+                                    newImage = docker.build("${imageName}:${imageTag}")
+                                    }
+                                sh "container-structure-test test --config test_config.yaml --image ${imageName}:${imageTag}"
+                                }
                         }
                     }
-                }
-                stage('test-image') {
-                    sh "container-structure-test test --config test_config.yaml --image ${imageName}:${imageTag}"
-                }
+                    }
                 }
             }
     type: JenkinsPipeline
