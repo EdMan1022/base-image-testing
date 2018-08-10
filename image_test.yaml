@@ -1,12 +1,11 @@
-schemaVersion: '1.0.0'
+schemaVersion: '2.0.0'
 
 commandTests:
-
-  - name: "python installation"
+  - name: 'pythoninstallation'
     command: "which"
-    args: ["python"]
-    expectedOutput: ["/usr/bin/python\n"]
+    args: ['python']
+    expectedOutput: ['/usr/local/bin/python\n']
 
-  - name: "python package installation"
-    command: "python"
-    args: ["-c", "\"import pysftp\""]
+  - name: 'python package installation'
+    command: 'python'
+    args: ['-c', 'import pysftp']
