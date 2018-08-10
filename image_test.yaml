@@ -1,11 +1,15 @@
 schemaVersion: '2.0.0'
 
 commandTests:
-  - name: 'pythoninstallation'
+  - name: 'python installation'
     command: "which"
     args: ['python']
     expectedOutput: ['/usr/local/bin/python\n']
 
-  - name: 'python package installation'
+  - name: 'pysftp package installation test'
+    command: 'python'
+    args: ['-c', 'import pysftp']
+
+  - name: 'paramiko package installation test'
     command: 'python'
     args: ['-c', 'import pysftp']
