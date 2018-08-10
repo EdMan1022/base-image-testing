@@ -13,5 +13,6 @@ Steps to run tests using this project:
     - Container Testing Framework Binary or Image (see above link)
 1. Build the test image (commands from root directory of this project)
     - `cd test_image`
-    - `docker build . -t test-image`
+    - `docker build . -t test-image:latest`
 1. Run the tests
+    - `container-structure-test test --config image_test.yaml --image test-image:latest`
