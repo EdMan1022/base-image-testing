@@ -1,0 +1,10 @@
+commandTests:
+
+  - name: "python installation"
+    command: "which"
+    args: ["python"]
+    expectedOutput: ["/usr/bin/python\n"]
+
+  - name: "python package installation"
+    command: "python"
+    args: ["-c", "\"import pysftp\""]
